@@ -32,9 +32,8 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    const categoryPost = await Category.findByPk(req.params.id)
-    await categoryPost.create()
-    res.status(200).json('Category Created')
+    const categoryPost = await Category.create(req.body)
+    res.status(200).json('Category Created', categoryPost)
   } catch (error) {
     res.status(404).json(error)
   }
@@ -42,7 +41,18 @@ router.post('/', async (req, res) => {
   // create a new category
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
+  try {
+    const categoryUpdate = await Category.update(req.body,{
+      where: {
+        id: req.params.id,
+      }
+    })
+    res.status(200).json('Category Updated', categoryUpdate)
+    
+  } catch (error) {
+    res.status(404).json(error)
+  }
   // update a category by its `id` value
 });
 
